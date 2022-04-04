@@ -29,7 +29,7 @@ def create_data_loader_cifar10():
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-    batch_size = 256
+    batch_size = 256//4
 
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                             download=True, transform=transform)                                  
@@ -78,9 +78,9 @@ def train(net, trainloader):
 
 
 def test(net, PATH, testloader):
-    if is_main_process:
-        net.load_state_dict(torch.load(PATH))
-    dist.barrier()
+    # if is_main_process:
+    #     net.load_state_dict(torch.load(PATH))
+    # dist.barrier()
 
     correct = 0
     total = 0
