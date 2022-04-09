@@ -6,13 +6,6 @@ code for the ddp tutorial
 Accuracy of the network on the 10000 test images: 27 %
 Total elapsed time: 69.03 seconds,      Train 1 epoch 13.08 seconds
 
-# dp 2gpus
-Total elapsed time: 100.53 seconds,      Train 1 epoch 42.97 seconds
-# dp 4gpus
-
-Accuracy of the network on the 10000 test images: 25 %
-Total elapsed time: 89.48 seconds,      Train 1 epoch 31.32 seconds
-
 
 # DDP 
 ```

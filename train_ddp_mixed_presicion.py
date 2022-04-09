@@ -59,12 +59,13 @@ def train(net, trainloader):
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data
 
-            images, labels = inputs.cuda(), labels.cuda() 
+            
             # zero the parameter gradients
             optimizer.zero_grad()
 
             # forward
             with torch.cuda.amp.autocast():
+                images, labels = inputs.cuda(), labels.cuda() 
                 outputs = net(images)
                 loss = criterion(outputs, labels)
 
@@ -78,7 +79,6 @@ def train(net, trainloader):
             running_loss += loss.item()
         
         print(f'[Epoch {epoch + 1}/{epochs}] loss: {running_loss / num_of_batches:.3f}')
-    
     print('Finished Training')
 
 
@@ -93,7 +93,6 @@ def test(net, PATH, testloader):
     with torch.no_grad():
         for data in testloader:
             images, labels = data
-
             images, labels = images.cuda(), labels.cuda() 
             # calculate outputs by running images through the network
             outputs = net(images)
@@ -108,7 +107,6 @@ def init_distributed():
 
     # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
     dist_url = "env://" # default
-
     # only works with torch.distributed.launch // torch.run
     rank = int(os.environ["RANK"])
     world_size = int(os.environ['WORLD_SIZE'])
@@ -131,7 +129,6 @@ if __name__ == '__main__':
     start = time.time()
     
     init_distributed()
-    
     PATH = './cifar_net.pth'
     trainloader, testloader = create_data_loader_cifar10()
     net = torchvision.models.resnet50(False).cuda()
@@ -158,6 +155,3 @@ if __name__ == '__main__':
     seconds_train = (end_train - start_train)
     print(f"Total elapsed time: {seconds:.2f} seconds, \
      Train 1 epoch {seconds_train:.2f} seconds")
-
-
-

@@ -29,19 +29,19 @@ def create_data_loader_cifar10():
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-    batch_size = 256//4
+    batch_size = 256
 
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                             download=True, transform=transform)                                  
     train_sampler = torch.utils.data.distributed.DistributedSampler(dataset=trainset, shuffle=True)                                                  
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
-                                            sampler=train_sampler, num_workers=10, pin_memory=True)
+                                            sampler=train_sampler, num_workers=16, pin_memory=True)
 
     testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                         download=True, transform=transform)
     test_sampler = torch.utils.data.distributed.DistributedSampler(dataset=testset, shuffle=True)                                         
     testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
-                                            shuffle=False, sampler=test_sampler, num_workers=10)
+                                            shuffle=False, sampler=test_sampler, num_workers=16)
     return trainloader, testloader
 
 
